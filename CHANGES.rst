@@ -2,6 +2,11 @@
 Changelog
 =========
 
+0.1.2 (2013-05-16)
+==================
+
+- Fixed an issue with related name with the UserStampedMode.
+
 0.1.1 (2013-05-16)
 ==================
 
