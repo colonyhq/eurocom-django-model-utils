@@ -2,6 +2,11 @@
 Changelog
 =========
 
+0.1.3 (2013-05-16)
+==================
+
+- Added user's to readonly fields in the UserStampedAdmin class.
+
 0.1.2 (2013-05-16)
 ==================
 
