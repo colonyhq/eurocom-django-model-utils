@@ -34,7 +34,7 @@ class UserStampedModel(models.Model):
         new object by checking the ``pk``.
         """
         if "user" not in kwargs.keys():
-            raise
+            raise Exception("The 'user' argument has not been set.")
 
         user = kwargs.get("user")
 
