@@ -3,6 +3,22 @@ from django.contrib import admin
 from .models import UserStampedModel
 
 
+class UserStampedTabularInline(admin.TabularInline):
+    """
+    A django ``TabularInline`` class to handle saving ``Model``s that implement the ``UserStampedModel`` or
+    ``UserTimeStampedModel`` classes.
+    """
+    readonly_fields = ("created_by", "updated_by")
+
+
+class UserStampedStackedInline(admin.StackedInline):
+    """
+    A django ``TabularInline`` class to handle saving ``Model``s that implement the ``UserStampedModel`` or
+    ``UserTimeStampedModel`` classes.
+    """
+    readonly_fields = ("created_by", "updated_by")
+
+
 class UserStampedAdmin(admin.ModelAdmin):
     """
     A django ``ModelAdmin`` class to handle saving ``Model``s that implement the ``UserStampedModel`` or
@@ -20,7 +36,7 @@ class UserStampedAdmin(admin.ModelAdmin):
         """
         """
         for obj in formset.save(commit=False):
-            if issubclass(obj, UserStampedModel):
+            if isinstance(obj, UserStampedModel):
                 obj.save(user=request.user)
             else:
                 obj.save()
