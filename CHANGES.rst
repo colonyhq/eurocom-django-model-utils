@@ -2,6 +2,11 @@
 Changelog
 =========
 
+0.1.1 (2013-07-18)
+==================
+
+- Updated the User import on models to be Django 1.5+ compatible.
+
 0.1 (2013-05-16)
 ================
 
