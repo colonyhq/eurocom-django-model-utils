@@ -2,6 +2,11 @@
 Changelog
 =========
 
+0.1.2 (2013-07-30)
+==================
+
+- Changed the edmu.models to get the User Model from settings.AUTH_USER_MODEL instead.
+
 0.1.1 (2013-07-18)
 ==================
 
