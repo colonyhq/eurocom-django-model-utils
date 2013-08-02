@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from uuidfield import UUIDField
 
 
-class BaseModel(models.Model):
+class UUIDModel(models.Model):
     """
     An abstract base class model that provides a UUID field as it's primary key..
     """
@@ -15,7 +15,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class TimeStampedModel(BaseModel):
+class TimeStampedModel(models.Model):
     """
     An abstract base class model that provides self-updating ``date_created`` and ``date_updated`` fields.
     """
@@ -26,7 +26,7 @@ class TimeStampedModel(BaseModel):
         abstract = True
 
 
-class UserStampedModel(BaseModel):
+class UserStampedModel(models.Model):
     """
     An abstract base class model that provides self-updating ``created_by`` and ``updated_by`` fields. To be able to
     save the user's information in the the ``created_by`` and ``updated_by`` fields, the ``user`` argument must be
@@ -59,7 +59,7 @@ class UserStampedModel(BaseModel):
         )
 
 
-class UserTimeStampedModel(BaseModel, TimeStampedModel, UserStampedModel):
+class UserTimeStampedModel(TimeStampedModel, UserStampedModel):
     """
     An abstract base class model that provides self-updating ``date_created``, ``date_updated``, ``created_by`` and
     ``updated_by`` fields. To be able to save the user's information in the the ``created_by`` and ``updated_by``

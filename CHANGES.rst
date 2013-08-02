@@ -2,6 +2,11 @@
 Changelog
 =========
 
+0.2.2 (2013-08-02)
+==================
+
+- Fixed an issue with multiple inheritance errors.
+
 0.2.1 (2013-08-02)
 ==================
 
