@@ -2,6 +2,11 @@
 Changelog
 =========
 
+0.2.3 (2013-08-02)
+==================
+
+- Added a JSON encoder under serializers that knows how to handle UUID fields.
+
 0.2.2 (2013-08-02)
 ==================
 
