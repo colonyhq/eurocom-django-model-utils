@@ -2,7 +2,12 @@
 Changelog
 =========
 
-0.1.3 (2013-08-02)
+0.2.1 (2013-08-02)
+==================
+
+- The parameters being sent into the UUID field are incorrect.
+
+0.2.0 (2013-08-02)
 ==================
 
 - Added a BaseModel that has a primary key as a UUID field. This BaseModel is also inherited by all previous models.

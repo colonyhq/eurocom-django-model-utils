@@ -9,7 +9,7 @@ class BaseModel(models.Model):
     """
     An abstract base class model that provides a UUID field as it's primary key..
     """
-    uuid = UUIDField(_('uuid'), primary_key=True, auto=True)
+    uuid = UUIDField(name=_('uuid'), primary_key=True, auto=True)
 
     class Meta:
         abstract = True
