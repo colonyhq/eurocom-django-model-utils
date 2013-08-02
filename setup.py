@@ -39,6 +39,5 @@ setup(
     ],
     setup_requires=[
         'setuptools',
-        'django-uuidfield==0.4.0',
     ],
 )
