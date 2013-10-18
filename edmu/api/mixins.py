@@ -91,11 +91,14 @@ class ObjectPermissionCheckAPIView(GenericAPIView):
     """
     Mixin to add methods to handle the getting and checking of object permissons.
     """
-    def check_object_permissions(self, permission_classes, request, obj):
+    def check_object_permissions(self, request, obj, permission_classes=None):
         """
         Check if the request should be permitted for a given object.
         Raises an appropriate exception if the request is not permitted.
         """
+        if not permission_classes:
+            return super(ObjectPermissionCheckAPIView, self).check_object_permissions(request, obj)
+
         for permission in [p() for p in permission_classes]:
             if not permission.has_object_permission(request, self, obj):
                 self.permission_denied(request)
@@ -136,11 +139,11 @@ class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
 
     def put(self, request, *args, **kwargs):
         self.check_method_permissions(self.update_permission_classes, request)
-        return self.update(request, args, kwargs)
+        return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         self.check_method_permissions(self.destroy_permission_classes, request)
-        return self.destroy(request, args, kwargs)
+        return self.destroy(request, *args, **kwargs)
 
 
 class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
@@ -158,7 +161,7 @@ class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
 
     def put(self, request, *args, **kwargs):
         self.check_method_permissions(self.update_permission_classes, request)
-        return self.update(request, args, kwargs)
+        return self.update(request, *args, **kwargs)
 
 
 class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
@@ -178,11 +181,11 @@ class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
 
     def put(self, request, *args, **kwargs):
         self.check_method_permissions(self.update_permission_classes, request)
-        return self.update(request, args, kwargs)
+        return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         self.check_method_permissions(self.destroy_permission_classes, request)
-        return self.destroy(request, args, kwargs)
+        return self.destroy(request, *args, **kwargs)
 
 
 class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
@@ -200,4 +203,4 @@ class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
 
     def delete(self, request, *args, **kwargs):
         self.check_method_permissions(self.destroy_permission_classes, request)
-        return self.destroy(request, args, kwargs)
+        return self.destroy(request, *args, **kwargs)
