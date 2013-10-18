@@ -73,6 +73,24 @@ class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
         return self.destroy(request, args, kwargs)
 
 
+class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            MethodPermissionCheckAPIView):
+    """
+    Concrete view for retrieving or updating a model instance.
+    """
+    retrieve_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
+    update_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
+
+    def get(self, request, *args, **kwargs):
+        self.check_method_permissions(self.retrieve_permission_classes, request)
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        self.check_method_permissions(self.update_permission_classes, request)
+        return self.update(request, args, kwargs)
+
+
 class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
                              mixins.DestroyModelMixin,
                              MethodPermissionCheckAPIView):
