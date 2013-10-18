@@ -42,22 +42,6 @@ class UserStampedModel(models.Model):
     class Meta:
         abstract = True
 
-    def save(self, user, force_insert=False, force_update=False, using=None):
-        """
-        We need to check that the user was actually passed in. We only set the ``created_by`` attribute if this is a
-        new object by checking the ``pk``.
-        """
-        # We only set the ``created_by`` field if the model is new (i.e. has not pk).
-        if not self.pk:
-            self.created_by = user
-        self.updated_by = user
-
-        super(UserStampedModel, self).save(
-            force_insert=force_insert,
-            force_update=force_update,
-            using=using
-        )
-
 
 class UserTimeStampedModel(TimeStampedModel, UserStampedModel):
     """
