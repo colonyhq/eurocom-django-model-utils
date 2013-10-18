@@ -5,60 +5,6 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.settings import api_settings
 
 
-class UserStampedMixin(object):
-    """
-    """
-    def create(self, request, *args, **kwargs):
-        """
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
-        """
-        serializer = self.get_serializer(data=request.DATA, files=request.FILES)
-
-        if serializer.is_valid():
-            self.pre_save(serializer.object)
-            self.object = serializer.save(force_insert=True, user=request.user)
-            self.post_save(self.object, created=True)
-            headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED,
-                            headers=headers)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def update(self, request, *args, **kwargs):
-        """
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
-        """
-        partial = kwargs.pop('partial', False)
-        self.object = self.get_object_or_none()
-
-        if self.object is None:
-            created = True
-            save_kwargs = {'force_insert': True}
-            success_status_code = status.HTTP_201_CREATED
-        else:
-            created = False
-            save_kwargs = {'force_update': True}
-            success_status_code = status.HTTP_200_OK
-
-        serializer = self.get_serializer(self.object, data=request.DATA,
-                                         files=request.FILES, partial=partial)
-
-        if serializer.is_valid():
-            save_kwargs.update({'user': request.user})
-            self.pre_save(serializer.object)
-            self.object = serializer.save(**save_kwargs)
-            self.post_save(self.object, created=created)
-            return Response(serializer.data, status=success_status_code)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class MethodPermissionCheckAPIView(GenericAPIView):
     """
     Adds extra methods to the ``GenericAPIView`` class to handle the getting and checking of method permissons.
