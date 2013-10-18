@@ -31,7 +31,7 @@ class MethodPermissionCheckAPIView(GenericAPIView):
                 self.permission_denied(request)
 
 
-class CreateListAPIView(mixins.CreateModelMixin,
+class ListCreateAPIView(mixins.CreateModelMixin,
                         mixins.ListModelMixin,
                         MethodPermissionCheckAPIView):
     """
