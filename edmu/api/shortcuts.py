@@ -1,5 +1,7 @@
-from django.shortcuts import get_object_or_404
+from django.http import Http404
+
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.generics import get_object_or_404
 
 
 def get_object_or_permission_denied(queryset, **filter_kwargs):
@@ -9,5 +11,5 @@ def get_object_or_permission_denied(queryset, **filter_kwargs):
     """
     try:
         return get_object_or_404(queryset, **filter_kwargs)
-    except (TypeError, ValueError):
+    except Http404:
         raise PermissionDenied
