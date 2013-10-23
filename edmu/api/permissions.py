@@ -1,6 +1,14 @@
 from rest_framework import permissions
 
 
+class IsCompanyActive(permissions.BasePermission):
+    """
+    Permission to check verify if a company is active
+    """
+    def has_permission(self, request, view):
+        return request.user.company.is_active
+
+
 class IsStaff(permissions.BasePermission):
     """
     Object-level permission, only users that are set as staff members.
