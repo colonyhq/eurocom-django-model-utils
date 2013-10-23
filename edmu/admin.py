@@ -30,13 +30,16 @@ class UserStampedAdmin(admin.ModelAdmin):
         """
         We need to pass the user to the save method as it is what the underlying model expects.
         """
-        obj.save(user=request.user)
+        if not obj.pk:
+            obj.created_by = request.user
+        obj.updated_by = request.user
+        obj.save()
 
     def save_formset(self, request, form, formset, change):
         """
         """
         for obj in formset.save(commit=False):
-            if isinstance(obj, UserStampedModel):
-                obj.save(user=request.user)
-            else:
-                obj.save()
+            if not obj.pk:
+                obj.created_by = request.user
+            obj.updated_by = request.user
+            obj.save()
