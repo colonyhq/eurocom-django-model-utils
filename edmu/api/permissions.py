@@ -48,5 +48,11 @@ class HasRole(permissions.BasePermission):
     role access to a resource.
     """
     def has_permission(self, request, view):
-        # `View` must have an attribute named `_role`
-        return view.role in request.user.roles
+        method = request.method.lower()
+        try:
+            roles = getattr(view, '%s_role' % method)
+            return bool([r for r in request.user.roles.all() if r in roles])
+        except AttributeError:
+            # If a role wasn't specified for this method, ignore it.
+            return True
+
