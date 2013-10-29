@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from rest_framework.exceptions import PermissionDenied
 
 
 class IsCompanyActive(permissions.BasePermission):
@@ -6,6 +7,8 @@ class IsCompanyActive(permissions.BasePermission):
     Permission to check verify if a company is active
     """
     def has_permission(self, request, view):
+        if not request.user.company:
+            raise PermissionDenied
         return request.user.company.is_active
 
 
