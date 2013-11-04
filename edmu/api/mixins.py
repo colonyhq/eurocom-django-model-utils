@@ -83,6 +83,10 @@ class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
         self.check_method_permissions(self.retrieve_permission_classes, request)
         return self.retrieve(request, *args, **kwargs)
 
+    def patch(self, request, *args, **kwargs):
+        self.check_method_permissions(self.update_permission_classes, request)
+        return self.update(request, *args, **kwargs)
+
     def put(self, request, *args, **kwargs):
         self.check_method_permissions(self.update_permission_classes, request)
         return self.update(request, *args, **kwargs)
@@ -105,6 +109,10 @@ class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
         self.check_method_permissions(self.retrieve_permission_classes, request)
         return self.retrieve(request, *args, **kwargs)
 
+    def patch(self, request, *args, **kwargs):
+        self.check_method_permissions(self.update_permission_classes, request)
+        return self.update(request, *args, **kwargs)
+
     def put(self, request, *args, **kwargs):
         self.check_method_permissions(self.update_permission_classes, request)
         return self.update(request, *args, **kwargs)
@@ -124,6 +132,10 @@ class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
     def get(self, request, *args, **kwargs):
         self.check_method_permissions(self.retrieve_permission_classes, request)
         return self.retrieve(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        self.check_method_permissions(self.update_permission_classes, request)
+        return self.update(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
         self.check_method_permissions(self.update_permission_classes, request)
