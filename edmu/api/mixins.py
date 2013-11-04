@@ -1,72 +1,71 @@
 from rest_framework import mixins
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView
-from rest_framework.settings import api_settings
+from rest_framework.views import APIView
 
 
-class MethodPermissionCheckAPIView(GenericAPIView):
+class MethodPermissionCheckAPIView(APIView):
     """
     Adds extra methods to the ``GenericAPIView`` class to handle the getting and checking of method permissons.
     """
-    def get_method_permissions(self, permission_classes):
+    def get_permissions(self):
         """
-        Instantiates and returns the list of permissions that the calling method requires.
-
-        :param permission_classes:
-            A list of permission classes to instantiate.
-
-        :return:
-            A list of instantiated permission classes.
+        Instantiates and returns the list of permissions that this view requires.
         """
-        return [permission() for permission in permission_classes]
+        method = self.request.method.lower()
 
-    def check_method_permissions(self, permission_classes, request):
-        """
-        Check if the request should be permitted. Raises an appropriate exception if the request is not permitted.
+        try:
+            use_permission_classes = getattr(self, '%s_permission_classes' % method)
+        except AttributeError:
+            use_permission_classes = self.permission_classes
 
-        :param permission_classes:
-            A list of permission classes to check against.
-        """
-        for permission in self.get_method_permissions(permission_classes):
-            if not permission.has_permission(request, self):
-                self.permission_denied(request)
+        return [permission() for permission in use_permission_classes]
 
 
-class ObjectPermissionCheckAPIView(GenericAPIView):
+class CreateAPIView(mixins.CreateModelMixin,
+                    MethodPermissionCheckAPIView):
     """
-    Mixin to add methods to handle the getting and checking of object permissons.
+    Concrete view for listing a model instance.
     """
-    def check_object_permissions(self, request, obj, permission_classes=None):
-        """
-        Check if the request should be permitted for a given object.
-        Raises an appropriate exception if the request is not permitted.
-        """
-        if not permission_classes:
-            return super(ObjectPermissionCheckAPIView, self).check_object_permissions(request, obj)
-
-        for permission in [p() for p in permission_classes]:
-            if not permission.has_object_permission(request, self, obj):
-                self.permission_denied(request)
+    allowed_methods = ['post', ]
 
 
-class ListCreateAPIView(mixins.CreateModelMixin,
-                        mixins.ListModelMixin,
+class ListAPIView(mixins.ListModelMixin,
+                  MethodPermissionCheckAPIView):
+    """
+    Concrete view for listing a model instance.
+    """
+    allowed_methods = ['get', ]
+
+
+class RetrieveAPIView(mixins.CreateModelMixin,
+                      MethodPermissionCheckAPIView):
+    """
+    Concrete view for listing a model instance.
+    """
+    allowed_methods = ['get', ]
+
+
+class UpdateAPIView(mixins.UpdateModelMixin,
+                    MethodPermissionCheckAPIView):
+    """
+    Concrete view for listing a model instance.
+    """
+    allowed_methods = ['put', ]
+
+
+class DestroyAPIView(mixins.DestroyModelMixin,
+                     MethodPermissionCheckAPIView):
+    """
+    Concrete view for listing a model instance.
+    """
+    allowed_methods = ['delete', ]
+
+
+class ListCreateAPIView(mixins.RetrieveModelMixin,
                         MethodPermissionCheckAPIView):
     """
     Concrete view for creating, retrieving or listing a model instance.
     """
     allowed_methods = ['get', 'post']
-    get_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-    post_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-
-    def get(self, request, *args, **kwargs):
-        self.check_method_permissions(self.get_permission_classes, request)
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.check_method_permissions(self.post_permission_classes, request)
-        return self.create(request, *args, **kwargs)
 
 
 class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
@@ -77,21 +76,6 @@ class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
     Concrete view for retrieving, updating or destroying a model instance.
     """
     allowed_methods = ['get', 'put', 'delete']
-    retrieve_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-    update_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-    destroy_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-
-    def get(self, request, *args, **kwargs):
-        self.check_method_permissions(self.retrieve_permission_classes, request)
-        return self.retrieve(request, *args, **kwargs)
-
-    def put(self, request, *args, **kwargs):
-        self.check_method_permissions(self.update_permission_classes, request)
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        self.check_method_permissions(self.destroy_permission_classes, request)
-        return self.destroy(request, *args, **kwargs)
 
 
 class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
@@ -101,16 +85,6 @@ class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
     Concrete view for retrieving or updating a model instance.
     """
     allowed_methods = ['get', 'put']
-    retrieve_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-    update_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-
-    def get(self, request, *args, **kwargs):
-        self.check_method_permissions(self.retrieve_permission_classes, request)
-        return self.retrieve(request, *args, **kwargs)
-
-    def put(self, request, *args, **kwargs):
-        self.check_method_permissions(self.update_permission_classes, request)
-        return self.update(request, *args, **kwargs)
 
 
 class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
@@ -120,13 +94,12 @@ class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
     Concrete view for retrieving or destroying a model instance.
     """
     allowed_methods = ['get', 'delete']
-    retrieve_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-    destroy_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
 
-    def get(self, request, *args, **kwargs):
-        self.check_method_permissions(self.retrieve_permission_classes, request)
-        return self.retrieve(request, *args, **kwargs)
 
-    def delete(self, request, *args, **kwargs):
-        self.check_method_permissions(self.destroy_permission_classes, request)
-        return self.destroy(request, *args, **kwargs)
+class UpdateDestroyAPIView(mixins.UpdateModelMixin,
+                           mixins.DestroyModelMixin,
+                           MethodPermissionCheckAPIView):
+    """
+    Concrete view for retrieving or destroying a model instance.
+    """
+    allowed_methods = ['put', 'delete']
