@@ -1,4 +1,4 @@
-from rest_framework import mixins
+from rest_framework import generics
 from rest_framework.views import APIView
 
 
@@ -20,86 +20,71 @@ class MethodPermissionCheckAPIView(APIView):
         return [permission() for permission in use_permission_classes]
 
 
-class CreateAPIView(mixins.CreateModelMixin,
-                    MethodPermissionCheckAPIView):
+class CreateAPIView(generics.CreateAPIView, MethodPermissionCheckAPIView):
     """
-    Concrete view for listing a model instance.
+    View for creating objects. It also implements the MethodPermissionCheckAPIView to allow for finer grained method
+    permission checking.
     """
-    allowed_methods = ['post', ]
 
 
-class ListAPIView(mixins.ListModelMixin,
-                  MethodPermissionCheckAPIView):
+class ListAPIView(generics.ListAPIView, MethodPermissionCheckAPIView):
     """
-    Concrete view for listing a model instance.
+    View for listing objects. It also implements the MethodPermissionCheckAPIView to allow for finer grained method
+    permission checking.
     """
-    allowed_methods = ['get', ]
 
 
-class RetrieveAPIView(mixins.CreateModelMixin,
-                      MethodPermissionCheckAPIView):
+class RetrieveAPIView(generics.RetrieveAPIView, MethodPermissionCheckAPIView):
     """
-    Concrete view for listing a model instance.
+    View for getting an object. It also implements the MethodPermissionCheckAPIView to allow for finer grained method
+    permission checking.
     """
-    allowed_methods = ['get', ]
 
 
-class UpdateAPIView(mixins.UpdateModelMixin,
-                    MethodPermissionCheckAPIView):
+class UpdateAPIView(generics.UpdateAPIView, MethodPermissionCheckAPIView):
     """
-    Concrete view for listing a model instance.
+    View for updating an object. It also implements the MethodPermissionCheckAPIView to allow for finer grained method
+    permission checking.
     """
-    allowed_methods = ['put', ]
 
 
-class DestroyAPIView(mixins.DestroyModelMixin,
-                     MethodPermissionCheckAPIView):
+class DestroyAPIView(generics.DestroyAPIView, MethodPermissionCheckAPIView):
     """
-    Concrete view for listing a model instance.
+    View for deleting an object. It also implements the MethodPermissionCheckAPIView to allow for finer grained method
+    permission checking.
     """
-    allowed_methods = ['delete', ]
 
 
-class ListCreateAPIView(mixins.RetrieveModelMixin,
-                        MethodPermissionCheckAPIView):
+class ListCreateAPIView(generics.ListCreateAPIView, MethodPermissionCheckAPIView):
     """
-    Concrete view for creating, retrieving or listing a model instance.
+    View for listing objects or creating an object. It also implements the MethodPermissionCheckAPIView to allow for
+    finer grained method permission checking.
     """
-    allowed_methods = ['get', 'post']
 
 
-class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
-                                   mixins.UpdateModelMixin,
-                                   mixins.DestroyModelMixin,
-                                   MethodPermissionCheckAPIView):
+class RetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView, MethodPermissionCheckAPIView):
     """
-    Concrete view for retrieving, updating or destroying a model instance.
+    View for getting, updating or deleting an object. It also implements the MethodPermissionCheckAPIView to allow for
+    finer grained method permission checking.
     """
-    allowed_methods = ['get', 'put', 'delete']
 
 
-class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
-                            mixins.UpdateModelMixin,
-                            MethodPermissionCheckAPIView):
+class RetrieveUpdateAPIView(generics.RetrieveAPIView, generics.UpdateAPIView, MethodPermissionCheckAPIView):
     """
-    Concrete view for retrieving or updating a model instance.
+    View for getting or updating an object. It also implements the MethodPermissionCheckAPIView to allow for finer
+    grained method permission checking.
     """
-    allowed_methods = ['get', 'put']
 
 
-class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
-                             mixins.DestroyModelMixin,
-                             MethodPermissionCheckAPIView):
+class RetrieveDestroyAPIView(generics.RetrieveAPIView, generics.DestroyAPIView, MethodPermissionCheckAPIView):
     """
-    Concrete view for retrieving or destroying a model instance.
+    View for getting or deleting an object. It also implements the MethodPermissionCheckAPIView to allow for finer
+    grained method permission checking.
     """
-    allowed_methods = ['get', 'delete']
 
 
-class UpdateDestroyAPIView(mixins.UpdateModelMixin,
-                           mixins.DestroyModelMixin,
-                           MethodPermissionCheckAPIView):
+class UpdateDestroyAPIView(generics.UpdateAPIView, generics.DestroyAPIView, MethodPermissionCheckAPIView):
     """
-    Concrete view for retrieving or destroying a model instance.
+    View for updating or deleting an object. It also implements the MethodPermissionCheckAPIView to allow for finer
+    grained method permission checking.
     """
-    allowed_methods = ['put', 'delete']
