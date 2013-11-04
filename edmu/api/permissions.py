@@ -54,7 +54,7 @@ class HasRole(permissions.BasePermission):
         method = request.method.lower()
 
         # if the method is not in the allowed Methods then return a False.
-        if method not in view.allowed_methods:
+        if method not in map(lambda x: x.lower(), view.allowed_methods):
             return False
 
         try:
