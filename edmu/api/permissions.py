@@ -52,6 +52,11 @@ class HasRole(permissions.BasePermission):
     """
     def has_permission(self, request, view):
         method = request.method.lower()
+
+        # if the method is not in the allowed Methods then return a False.
+        if method not in view.allowed_methods:
+            return False
+
         try:
             roles = getattr(view, '%s_roles' % method)
             return bool([r for r in request.user.roles() if r.slug in roles])

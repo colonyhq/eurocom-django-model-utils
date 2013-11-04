@@ -56,6 +56,7 @@ class ListCreateAPIView(mixins.CreateModelMixin,
     """
     Concrete view for creating, retrieving or listing a model instance.
     """
+    allowed_methods = ['get', 'post']
     get_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     post_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
 
@@ -75,6 +76,7 @@ class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
     """
     Concrete view for retrieving, updating or destroying a model instance.
     """
+    allowed_methods = ['get', 'put', 'delete']
     retrieve_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     update_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     destroy_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
@@ -82,10 +84,6 @@ class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
     def get(self, request, *args, **kwargs):
         self.check_method_permissions(self.retrieve_permission_classes, request)
         return self.retrieve(request, *args, **kwargs)
-
-    def patch(self, request, *args, **kwargs):
-        self.check_method_permissions(self.update_permission_classes, request)
-        return self.update(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
         self.check_method_permissions(self.update_permission_classes, request)
@@ -102,6 +100,7 @@ class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
     """
     Concrete view for retrieving or updating a model instance.
     """
+    allowed_methods = ['get', 'put']
     retrieve_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     update_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
 
@@ -109,41 +108,9 @@ class RetrieveUpdateAPIView(mixins.RetrieveModelMixin,
         self.check_method_permissions(self.retrieve_permission_classes, request)
         return self.retrieve(request, *args, **kwargs)
 
-    def patch(self, request, *args, **kwargs):
-        self.check_method_permissions(self.update_permission_classes, request)
-        return self.update(request, *args, **kwargs)
-
     def put(self, request, *args, **kwargs):
         self.check_method_permissions(self.update_permission_classes, request)
         return self.update(request, *args, **kwargs)
-
-
-class RetrieveUpdateDestroyAPIView(mixins.RetrieveModelMixin,
-                                   mixins.UpdateModelMixin,
-                                   mixins.DestroyModelMixin,
-                                   MethodPermissionCheckAPIView):
-    """
-    Concrete view for retrieving, updating or destroying a model instance.
-    """
-    retrieve_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-    update_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-    destroy_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
-
-    def get(self, request, *args, **kwargs):
-        self.check_method_permissions(self.retrieve_permission_classes, request)
-        return self.retrieve(request, *args, **kwargs)
-
-    def patch(self, request, *args, **kwargs):
-        self.check_method_permissions(self.update_permission_classes, request)
-        return self.update(request, *args, **kwargs)
-
-    def put(self, request, *args, **kwargs):
-        self.check_method_permissions(self.update_permission_classes, request)
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        self.check_method_permissions(self.destroy_permission_classes, request)
-        return self.destroy(request, *args, **kwargs)
 
 
 class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
@@ -152,6 +119,7 @@ class RetrieveDestroyAPIView(mixins.RetrieveModelMixin,
     """
     Concrete view for retrieving or destroying a model instance.
     """
+    allowed_methods = ['get', 'delete']
     retrieve_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     destroy_permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
 
