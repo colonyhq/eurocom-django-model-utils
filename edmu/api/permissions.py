@@ -57,5 +57,5 @@ class HasRole(permissions.BasePermission):
             return bool([r for r in request.user.roles() if r.slug in roles])
         except AttributeError:
             # If a role wasn't specified for this method, ignore it.
-            return True
+            raise AttributeError('Attribute "%s" needs to be added to "%s".' % ('%s_roles' % method, view))
 
