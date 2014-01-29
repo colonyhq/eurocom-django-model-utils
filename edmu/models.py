@@ -22,7 +22,7 @@ class TimeStampedModel(models.Model):
     """
     An abstract base class model that provides self-updating ``date_created`` and ``date_updated`` fields.
     """
-    date_created = models.DateTimeField(_('date created'), default=datetime.datetime.now)
+    date_created = models.DateTimeField(_('date created'), default=datetime.now)
     date_updated = models.DateTimeField(_('date updated'), auto_now=True)
 
     class Meta:
