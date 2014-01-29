@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.db import models
 from django.db.models import Max
@@ -20,7 +22,7 @@ class TimeStampedModel(models.Model):
     """
     An abstract base class model that provides self-updating ``date_created`` and ``date_updated`` fields.
     """
-    date_created = models.DateTimeField(_('date created'), auto_now_add=True)
+    date_created = models.DateTimeField(_('date created'), default=datetime.datetime.now)
     date_updated = models.DateTimeField(_('date updated'), auto_now=True)
 
     class Meta:
