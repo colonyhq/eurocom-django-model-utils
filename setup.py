@@ -37,6 +37,7 @@ setup(
         'setuptools',
         'django',
         'django-uuidfield==0.4.0',
+        'mongoengine'
     ],
     setup_requires=[
         'setuptools',
