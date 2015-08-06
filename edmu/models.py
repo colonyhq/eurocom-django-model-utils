@@ -3,18 +3,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from uuidfield import UUIDField
-
-
-class UUIDModel(models.Model):
-    """
-    An abstract base class model that provides a UUID field as it's primary key..
-    """
-    uuid = UUIDField(name=_('uuid'), primary_key=True, auto=True)
-
-    class Meta:
-        abstract = True
-
 
 class TimeStampedModel(models.Model):
     """
