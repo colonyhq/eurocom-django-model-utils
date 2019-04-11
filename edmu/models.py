@@ -24,9 +24,9 @@ class UserStampedModel(models.Model):
     To user ``UserStampedModel``, the user model needs to be passed in the ``save`` method via ``user``.
     """
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('created by'),
-                                   related_name='%(app_label)s_%(class)s_created_by')
+                                   related_name='%(app_label)s_%(class)s_created_by', on_delete=models.CASCADE)
     updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('updated by'),
-                                   related_name='%(app_label)s_%(class)s_updated_by')
+                                   related_name='%(app_label)s_%(class)s_updated_by', on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
